@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Mastery — Master Your Money Through Play</title>
+    <meta name="description" content="Learn budgeting, credit, investing, taxes, real estate & income through 7 worlds of interactive games. Free on iOS.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #FFD700;
+            --gold-glow: rgba(255, 215, 0, 0.3);
+            --pink: #EC4899;
+            --pink-hot: #FF2D8A;
+            --pink-light: #F472B6;
+            --magenta: #D946EF;
+            --purple-deep: #1a0a2e;
+            --purple-mid: #2d1450;
+            --purple-card: rgba(45, 20, 80, 0.6);
+            --green: #10B981;
+            --green-bright: #34D399;
+            --red: #EF4444;
+            --orange: #F59E0B;
+            --bg-deep: #0d0415;
+            --text: #f0e8f8;
+            --text-muted: #a89bb8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg-deep); color: var(--text); overflow-x: hidden; }
+        .bg-glow { position: fixed; border-radius: 50%; filter: blur(140px); pointer-events: none; z-index: 0; }
+        .bg-glow-1 { width: 700px; height: 700px; top: -300px; left: -200px; background: var(--pink-hot); opacity: 0.12; }
+        .bg-glow-2 { width: 600px; height: 600px; bottom: -200px; right: -200px; background: var(--magenta); opacity: 0.1; }
+        .bg-glow-3 { width: 500px; height: 500px; top: 40%; left: 50%; transform: translate(-50%, -50%); background: var(--gold); opacity: 0.06; }
+        .sparkle-field { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .sparkle { position: absolute; width: 3px; height: 3px; background: var(--gold); border-radius: 50%; box-shadow: 0 0 6px var(--gold-glow); animation: sparkle-float 6s ease-in-out infinite; opacity: 0; }
+        @keyframes sparkle-float { 0%, 100% { opacity: 0; transform: translateY(0) scale(0.5); } 50% { opacity: 0.9; transform: translateY(-50px) scale(1.2); } }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 24px 60px; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(236,72,153,0.12); border: 1px solid rgba(236,72,153,0.35); border-radius: 100px; padding: 8px 20px; font-size: 0.85rem; color: var(--pink-light); margin-bottom: 32px; animation: fadeInUp 0.6s ease-out; }
+        .hero-badge .dot { width: 8px; height: 8px; background: var(--pink); border-radius: 50%; animation: pulse-dot 2s ease-in-out infinite; }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.7); } }
+        .hero h1 { font-family: 'Bangers', cursive; font-size: clamp(3.5rem, 8vw, 7rem); letter-spacing: 3px; line-height: 1; margin-bottom: 20px; animation: fadeInUp 0.6s ease-out 0.1s both; }
+        .hero h1 .money { color: var(--gold); text-shadow: 0 0 40px var(--gold-glow), 0 2px 0 #b8960c; }
+        .hero h1 .mastery { color: var(--pink-hot); text-shadow: 0 0 40px rgba(255,45,138,0.4), 0 2px 0 #c4206e; }
+        .hero p { font-size: 1.25rem; color: var(--text-muted); max-width: 560px; margin-bottom: 40px; line-height: 1.7; animation: fadeInUp 0.6s ease-out 0.2s both; }
+        .hero-cta { display: flex; flex-direction: column; align-items: center; gap: 16px; animation: fadeInUp 0.6s ease-out 0.3s both; }
+        .btn-primary { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, var(--pink-hot), var(--magenta)); color: #fff; font-family: 'Bangers', cursive; font-size: 1.3rem; letter-spacing: 1.5px; padding: 18px 48px; border-radius: 16px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 24px rgba(236,72,153,0.35), inset 0 1px 0 rgba(255,255,255,0.15); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 36px rgba(236,72,153,0.5), inset 0 1px 0 rgba(255,255,255,0.15); }
+        .btn-primary svg { width: 24px; height: 24px; }
+        .hero-sub { font-size: 0.85rem; color: var(--text-muted); }
+        .stats { padding: 60px 0; display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+        .stat { text-align: center; }
+        .stat-num { font-family: 'Bangers', cursive; font-size: 3rem; letter-spacing: 1px; background: linear-gradient(135deg, var(--gold), var(--orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .stat-label { color: var(--text-muted); font-size: 0.9rem; margin-top: 4px; }
+        .divider { width: 120px; height: 3px; background: linear-gradient(90deg, var(--pink-hot), var(--magenta), var(--gold)); margin: 0 auto; border-radius: 2px; opacity: 0.6; }
+        .worlds-section { padding: 80px 0; }
+        .section-title { font-family: 'Bangers', cursive; font-size: 2.5rem; text-align: center; letter-spacing: 2px; margin-bottom: 16px; background: linear-gradient(135deg, var(--gold), var(--orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .section-subtitle { text-align: center; color: var(--text-muted); max-width: 500px; margin: 0 auto 48px; font-size: 1.05rem; }
+        .worlds-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .world-card { background: var(--purple-card); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 28px; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .world-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 20px 20px 0 0; }
+        .world-card:nth-child(1)::before { background: linear-gradient(90deg, #10B981, #34D399); }
+        .world-card:nth-child(2)::before { background: linear-gradient(90deg, #3B82F6, #60A5FA); }
+        .world-card:nth-child(3)::before { background: linear-gradient(90deg, #8B5CF6, #A78BFA); }
+        .world-card:nth-child(4)::before { background: linear-gradient(90deg, #F59E0B, #FBBF24); }
+        .world-card:nth-child(5)::before { background: linear-gradient(90deg, #EF4444, #F87171); }
+        .world-card:nth-child(6)::before { background: linear-gradient(90deg, #EC4899, #F472B6); }
+        .world-card:nth-child(7)::before { background: linear-gradient(90deg, #FFD700, #FDE68A); }
+        .world-card:hover { background: rgba(60,30,100,0.7); transform: translateY(-4px); border-color: rgba(255,255,255,0.15); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+        .world-num { font-family: 'Bangers', cursive; font-size: 0.85rem; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 4px; }
+        .world-card h3 { font-family: 'Bangers', cursive; font-size: 1.5rem; letter-spacing: 1px; margin-bottom: 8px; }
+        .world-card:nth-child(1) h3 { color: #34D399; } .world-card:nth-child(2) h3 { color: #60A5FA; } .world-card:nth-child(3) h3 { color: #A78BFA; } .world-card:nth-child(4) h3 { color: #FBBF24; } .world-card:nth-child(5) h3 { color: #F87171; } .world-card:nth-child(6) h3 { color: #F472B6; } .world-card:nth-child(7) h3 { color: #FDE68A; }
+        .world-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
+        .world-emoji { font-size: 2rem; margin-bottom: 12px; display: block; }
+        .characters { padding: 80px 0; }
+        .char-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 800px; margin: 0 auto; }
+        .char-card { background: var(--purple-card); backdrop-filter: blur(10px); border-radius: 20px; padding: 32px; text-align: center; transition: all 0.3s ease; }
+        .char-card:hover { transform: translateY(-4px); }
+        .char-card.theo { border: 1px solid rgba(16,185,129,0.25); } .char-card.brax { border: 1px solid rgba(239,68,68,0.25); }
+        .char-emoji { font-size: 3.5rem; margin-bottom: 16px; display: block; }
+        .char-card h3 { font-family: 'Bangers', cursive; font-size: 1.5rem; letter-spacing: 1px; margin-bottom: 8px; }
+        .char-card.theo h3 { color: var(--green-bright); } .char-card.brax h3 { color: var(--red); }
+        .char-card p { color: var(--text-muted); line-height: 1.6; }
+        .features { padding: 60px 0; }
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px; margin: 0 auto; }
+        .feature { text-align: center; padding: 24px 16px; border-radius: 16px; background: var(--purple-card); border: 1px solid rgba(255,255,255,0.05); }
+        .feature-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
+        .feature h4 { font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 1px; color: var(--pink-light); margin-bottom: 6px; }
+        .feature p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; }
+        .cta-section { padding: 100px 0 80px; text-align: center; }
+        .cta-section h2 { font-family: 'Bangers', cursive; font-size: 2.8rem; letter-spacing: 2px; margin-bottom: 16px; background: linear-gradient(135deg, var(--pink-hot), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .cta-section p { color: var(--text-muted); margin-bottom: 32px; font-size: 1.1rem; }
+        footer { padding: 40px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.06); }
+        footer p { color: var(--text-muted); font-size: 0.85rem; }
+        footer a { color: var(--pink-light); text-decoration: none; } footer a:hover { text-decoration: underline; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { opacity: 0; transform: translateY(24px); transition: all 0.6s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        @media (max-width: 640px) { .char-grid { grid-template-columns: 1fr; } .features-grid { grid-template-columns: 1fr; max-width: 340px; } .stats { gap: 32px; } .hero { padding: 60px 20px 40px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+    <div class="sparkle-field" id="sparkles"></div>
+    <section class="hero">
+        <div class="hero-badge"><span class="dot"></span> Coming soon to iOS</div>
+        <h1><span class="money">MONEY</span><br><span class="mastery">MASTERY</span></h1>
+        <p>Master budgeting, credit, investing, taxes, real estate, and income through 7 worlds of interactive games. Learn skills that will change your financial life — forever.</p>
+        <div class="hero-cta">
+            <a href="#" class="btn-primary"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg> JOIN THE BETA</a>
+            <span class="hero-sub">Free · No ads · No data collection</span>
+        </div>
+    </section>
+    <div class="container">
+        <div class="stats fade-in">
+            <div class="stat"><div class="stat-num">7</div><div class="stat-label">Financial Worlds</div></div>
+            <div class="stat"><div class="stat-num">25+</div><div class="stat-label">Mini-Games</div></div>
+            <div class="stat"><div class="stat-num">7</div><div class="stat-label">Boss Battles</div></div>
+            <div class="stat"><div class="stat-num">$0</div><div class="stat-label">Price Tag</div></div>
+        </div>
+        <div class="divider"></div>
+    </div>
+    <section class="worlds-section"><div class="container">
+        <h2 class="section-title fade-in">7 WORLDS. REAL SKILLS.</h2>
+        <p class="section-subtitle fade-in">Each world teaches a core money skill through games you'll actually want to play.</p>
+        <div class="worlds-grid">
+            <div class="world-card fade-in"><span class="world-emoji">🪙</span><div class="world-num">WORLD 1</div><h3>BUDGETING</h3><p>Build budgets, sort needs vs wants, and make split-second financial decisions under pressure.</p></div>
+            <div class="world-card fade-in"><span class="world-emoji">💳</span><div class="world-num">WORLD 2</div><h3>CREDIT</h3><p>Hunt credit score leaks, dodge debt traps, and learn how the credit system really works.</p></div>
+            <div class="world-card fade-in"><span class="world-emoji">📈</span><div class="world-num">WORLD 3</div><h3>INVESTING</h3><p>Climb the compound interest ladder, balance risk vs reward, and watch your money grow.</p></div>
+            <div class="world-card fade-in"><span class="world-emoji">🏛️</span><div class="world-num">WORLD 4</div><h3>TAXES</h3><p>Master brackets, sort W-2 vs 1099, spot deductions, and survive an IRS audit defense.</p></div>
+            <div class="world-card fade-in"><span class="world-emoji">🏠</span><div class="world-num">WORLD 5</div><h3>REAL ESTATE</h3><p>Compare renting vs buying, flip properties, and learn to spot the deals that build wealth.</p></div>
+            <div class="world-card fade-in"><span class="world-emoji">💼</span><div class="world-num">WORLD 6</div><h3>INCOME</h3><p>Build income streams, negotiate salary, bust money myths, and diversify your earnings.</p></div>
+            <div class="world-card fade-in"><span class="world-emoji">🏆</span><div class="world-num">WORLD 7</div><h3>MASTERY</h3><p>The ultimate challenge. FIRE planning, net worth building, and the final boss battle.</p></div>
+        </div>
+    </div></section>
+    <section class="characters"><div class="container">
+        <div class="divider" style="margin-bottom: 48px;"></div>
+        <h2 class="section-title fade-in">MEET YOUR GUIDE & YOUR RIVAL</h2>
+        <p class="section-subtitle fade-in">Every question, every round — they're right there with you.</p>
+        <div class="char-grid">
+            <div class="char-card theo fade-in"><span class="char-emoji">🧓</span><h3>THEO</h3><p>Your Money Mentor. After every question, Theo drops real financial wisdom that sticks. He's the teacher you wish you had in school.</p></div>
+            <div class="char-card brax fade-in"><span class="char-emoji">👹</span><h3>BRAX</h3><p>The villain who profits from financial ignorance. He taunts you, challenges you, and guards the end of every world. Beat him to prove you've learned.</p></div>
+        </div>
+    </div></section>
+    <section class="features"><div class="container">
+        <div class="features-grid fade-in">
+            <div class="feature"><span class="feature-icon">⭐</span><h4>STAR GATES</h4><p>Earn 2+ stars to unlock the next world. No shortcuts.</p></div>
+            <div class="feature"><span class="feature-icon">🔒</span><h4>ZERO DATA</h4><p>Nothing leaves your phone. No tracking, no accounts, no ads.</p></div>
+            <div class="feature"><span class="feature-icon">🧠</span><h4>REAL SKILLS</h4><p>Not trivia. Actual financial concepts you'll use for life.</p></div>
+        </div>
+    </div></section>
+    <section class="cta-section"><div class="container fade-in">
+        <h2>READY TO MASTER YOUR MONEY?</h2>
+        <p>Join the beta and be the first to play.</p>
+        <a href="#" class="btn-primary"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg> JOIN THE BETA</a>
+    </div></section>
+    <footer><div class="container"><p>© 2026 Money Mastery &nbsp;·&nbsp; <a href="privacy-policy.html">Privacy Policy</a> &nbsp;·&nbsp; <a href="mailto:support@moneymastery.app">Contact</a></p></div></footer>
+    <script>
+        const field = document.getElementById('sparkles');
+        for (let i = 0; i < 35; i++) { const s = document.createElement('div'); s.className = 'sparkle'; s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%'; s.style.animationDelay = Math.random()*6+'s'; s.style.animationDuration = (4+Math.random()*4)+'s'; field.appendChild(s); }
+        const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
